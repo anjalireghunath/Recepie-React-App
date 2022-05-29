@@ -1,41 +1,32 @@
+import axios from 'axios'
 import React, { useState } from 'react'
+import Header from './Header'
 
 const ViewRec = () => {
-    var [viewlist,setViewlist]=useState([
-        {
-            "title":"Aviyal",
-            "category":"veg",
-            "description":"It is very tasty",
-            "preparedby":"Anjana"
-        },
-        {
-            "title":"sambar",
-            "category":"veg",
-            "description":"It is very tasty",
-            "preparedby":"Devika"
-        },
-        {
-            "title":"Fish curry",
-            "category":"non-veg",
-            "description":"sea food",
-            "preparedby":"Shamna"
-        },
-        {
-            "title":"Ladu",
-            "category":"veg",
-            "description":"yellow food",
-            "preparedby":"shamees"
-        },
-        {
-            "title":"chicken curry",
-            "category":"non-veg",
-            "description":"fghvfgvhvgvhbhgbhbnj",
-            "preparedby":"Lekshmi"
+    var [viewlist,setViewlist]=useState([])
+    axios.get("http://localhost:4008/api/recview").then((response)=>{
+        console.log(response.data)
+        setViewlist(response.data)
+    })
+
+    const deleteData=(id)=>{
+        const data={"_id":id}
+        console.log(data)
+        axios.post("http://localhost:4008/api/delete",data).then((response)=>{
+            if(response.data.status=="success")
+            {
+                alert("successfully deleted")
+            }
+            else
+            {
+                alert("failed to delete")
+            }
+        })
         }
-    ])
+
   return (
     <div>
-
+<Header/>
 <div className="container">
     <div className="row">
         <div className="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
@@ -50,6 +41,7 @@ const ViewRec = () => {
                  <p className="card-text">Description:  {value.description}</p>
                  <p className="card-text">Preparedby:  {value.preparedby}</p>
                </div>
+           <center>   <button onClick={()=>{deleteData(value._id)}} className="btn btn-danger">DELETE</button></center>
              </div>
              </div>
            })}

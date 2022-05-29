@@ -1,3 +1,4 @@
+import axios from 'axios'
 import React, { useState } from 'react'
 import Header from './Header'
 
@@ -9,6 +10,17 @@ const ReceipeEntry = () => {
     const titleData=()=>{
         const data={"title":title,"category":category,"description":description,"preparedby":preparedby}
         console.log(data)
+        axios.post("http://localhost:4008/api/addreceipe",data).then((response)=>{
+            console.log(response.data)
+            if(response.data.status=="success")
+            {
+                alert("successfully added")
+            }
+            else
+            {
+                alert("failed to add")
+            }
+        })
     }
   return (
     <div>
